@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CountryItem: React.FC= () => {
+const CountryItem: React.FC = () => {
     return (
         <div>
 
