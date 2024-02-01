@@ -1,48 +1,64 @@
-// import { useState } from 'react'
 import './App.css';
 import Country from "./components/Country/Country";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
-import {CountryFromAPI, CountryType} from "./types";
+import {CountryFromAPI, CountryType, Language, TargetCountry} from "./types";
+import CountryItem from "./components/CountryItem/CountryItem";
 
 function App() {
-    const [countries, setCountries] = useState<CountryType[]>([]);
-    // const [click, setClick] = useState(false);
+    const [countryList, setCountryList] = useState<CountryType[]>([]);
+    const [targetCountry, setTargetCountry] = useState<TargetCountry>();
+    const [targetCountryBorders, setTargetCountryBorders] = useState();
+    const [click, setClick] = useState(false);
 
     const getCountries = useCallback(async () => {
         const {data: countriesApi} = await axios.get('https://restcountries.com/v2/all?fields=alpha3Code,name');
         const countries = countriesApi.map((country: CountryFromAPI, index: number) => {
             return {
                 id: `country-${index}`,
-                clicked: false,
-                ...country,
+                name: country.name,
+                alpha3Code: country.alpha3Code
             };
         });
         console.log(countries);
-        setCountries(countries);
+        setCountryList(countries);
     }, []);
 
     useEffect(() => {
         void getCountries();
     }, [getCountries]);
 
-    const clickedOnCountry = (idx: number) => {
-        // setCountries(prevState => {
-        //     prevState[idx].clicked = true;
-        //     return prevState;
-        // });
+    const onCountryClick = async (country: CountryType) => {
+        const {data: response} = await axios.get(`https://restcountries.com/v2/alpha/${country.alpha3Code}`);
+        // console.log(response);
+        const langNames = response.languages.map((language: Language) => language.name);
+
+        const result: TargetCountry = {
+            name: response.name,
+            capital: response.capital,
+            population: response.population,
+            borders: response.borders,
+            languages: langNames,
+            flag: response.flag
+        };
+
+        console.log(result);
+        setTargetCountry(result);
     };
 
   return (
     <>
-        {countries.map((country, index) => {
+        {countryList.map((country) => {
             return <Country
                     key={country.id}
                     countryName={country.name}
-                    onClick={() => clickedOnCountry(index)}
-                    clicked={country.clicked}
+                    onClick={() => onCountryClick(country)}
+                    clicked={click}
                 />;
         })}
+        <CountryItem
+            countryObj={targetCountry}
+        />
     </>
   );
 }
