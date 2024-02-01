@@ -15,11 +15,12 @@ export interface Language {
 }
 
 export interface TargetCountry {
+    id: string
     name: string,
     capital: string,
     population: number,
     borders: string[],
-    languages: Language[]
+    languages: string[]
     flag: string
 }
 
