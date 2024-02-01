@@ -2,10 +2,21 @@ import React from 'react';
 import {TargetCountryObj} from "../../types";
 
 const CountryItem: React.FC<TargetCountryObj> = ({countryObj}) => {
+    const mainStyles: React.CSSProperties = {
+        border: '2px solid #FF8C00',
+        width: "100%",
+        height: '93vh',
+        overflowX: 'hidden',
+        overflowY: 'auto',
+        padding: 20,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
+    };
     return (
         <>
             {countryObj ?
-                <div style={{width: "100%",height: "93vh", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between", border: '2px solid #FF8C00',}}>
+                <div style={mainStyles}>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                         <div>
                             <h1 style={{marginTop: 0}}>{countryObj.name}</h1>
