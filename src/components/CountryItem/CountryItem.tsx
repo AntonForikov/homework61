@@ -35,7 +35,7 @@ const CountryItem: React.FC<TargetCountryObj> = ({countryObj}) => {
                         }
                     </div>
                 </div>
-                : <h1 style={{paddingLeft: 20}}>Please choose country</h1>}
+                : <h1 style={{paddingLeft: 20, margin: "auto"}}>Please choose country</h1>}
         </>
     );
 };
